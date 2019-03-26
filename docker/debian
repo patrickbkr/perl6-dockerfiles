@@ -1,0 +1,43 @@
+FROM debian:stable-slim as build
+
+ARG MOAR_BRANCH=master
+ARG MOAR_REPO=https://github.com/moarvm/moarvm.git
+ARG NQP_BRANCH=master
+ARG NQP_REPO=https://github.com/perl6/nqp.git
+ARG RAKUDO_BRANCH=master
+ARG RAKUDO_REPO=https://github.com/rakudo/rakudo.git
+
+# Prepare for building Perl 6
+RUN apt update && apt install -y build-essential git
+
+# Install MoarVM
+COPY util/build-moarvm.sh /root/build-moarvm.sh
+RUN sh /root/build-moarvm.sh
+
+# Install NQP
+COPY util/build-nqp.sh /root/build-nqp.sh
+RUN sh /root/build-nqp.sh
+
+# Install Rakudo
+COPY util/build-rakudo.sh /root/build-rakudo.sh
+RUN sh /root/build-rakudo.sh
+
+# Bootstrap zef
+COPY util/bootstrap-zef.sh /root/bootstrap-zef.sh
+RUN sh /root/bootstrap-zef.sh
+
+# Create the final image containing the built targets
+FROM debian:stable-slim
+
+LABEL schema-version="1.0"
+LABEL maintainer="Patrick Spek <p.spek@tyil.work>"
+LABEL description="A minimal Perl 6 installation"
+LABEL vcs-url="https://git.tyil.nl/docker/perl6"
+
+ENV PATH=$PATH:/usr/local/share/perl6/site/bin
+
+COPY --from=build /usr/local /usr/local
+
+CMD ["perl6"]
+
+# vim: ft=dockerfile
