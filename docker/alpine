@@ -8,7 +8,7 @@ ARG RAKUDO_BRANCH=master
 ARG RAKUDO_REPO=https://github.com/rakudo/rakudo.git
 
 # Prepare for building Perl 6
-RUN apk add --no-cache build-base git perl
+RUN apk add --no-cache bash build-base git perl
 
 # Install MoarVM
 COPY util/build-moarvm.sh /root/build-moarvm.sh
