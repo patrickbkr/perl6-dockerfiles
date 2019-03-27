@@ -36,12 +36,12 @@ build_docker()
 	[ -z "$BASE" ] && BASE=debian
 	[ -z "$TAG" ] && TAG=$BASE
 
-	make BASE="${BASE}" TAG="${TAG:-$BASE}-$DATE" docker \
-		&& docker push "tyil/perl6:$BASE-$DATE" \
+	make BASE="${BASE}" TAG="$TAG-$DATE" docker \
+		&& docker push "tyil/perl6:$TAG-$DATE" \
 		&& docker tag \
-			"$(docker images | awk '/^tyil\/perl6\s+'"$BASE"'-'"$DATE"'\s+/ { print $3 }')" \
+			"$(docker images | awk '/^tyil\/perl6\s+'"$TAG"'-'"$DATE"'\s+/ { print $3 }')" \
 			tyil/perl6:debian-latest \
-		&& docker push "tyil/perl6:$BASE-latest"
+		&& docker push "tyil/perl6:$TAG-latest"
 }
 
 cleanup()
