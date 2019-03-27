@@ -19,6 +19,7 @@ docker:
 		--build-arg "NQP_REPO=$(NQP_REPO)" \
 		--build-arg "RAKUDO_BRANCH=$(RAKUDO_BRANCH)" \
 		--build-arg "RAKUDO_REPO=$(RAKUDO_REPO)" \
+		--no-cache \
 		-t $(USER)/$(NAME):$(TAG) \
 		-f docker/$(BASE) \
 		.
