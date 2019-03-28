@@ -24,6 +24,9 @@ LABEL maintainer="Patrick Spek <p.spek@tyil.work>"
 LABEL description="A minimal Perl 6 installation"
 LABEL vcs-url="https://git.tyil.nl/docker/perl6"
 
+# Add some programs to get Zef working
+RUN xbps-install -Sy base-devel git
+
 ENV PATH=$PATH:/usr/local/share/perl6/site/bin
 
 COPY --from=build /usr/local /usr/local
