@@ -36,7 +36,7 @@ build_docker()
 	[ -z "$BASE" ] && BASE=debian
 	[ -z "$TAG" ] && TAG=$BASE
 
-	make BASE="${BASE}" TAG="$TAG-$DATE" docker \
+	make BASE="${BASE}" TAG="$TAG-$DATE" docker-repo \
 		&& docker push "tyil/perl6:$TAG-$DATE" \
 		&& docker tag \
 			"$(docker images | awk '/^tyil\/perl6\s+'"$TAG"'-'"$DATE"'\s+/ { print $3 }')" \

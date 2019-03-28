@@ -1,5 +1,7 @@
 FROM debian:stable-slim as build
 
+ARG RELEASE=0
+ARG RAKUDO_VERSION=2019.03.1
 ARG MOAR_BRANCH=master
 ARG MOAR_REPO=https://github.com/moarvm/moarvm.git
 ARG NQP_BRANCH=master
@@ -10,21 +12,9 @@ ARG RAKUDO_REPO=https://github.com/rakudo/rakudo.git
 # Prepare for building Perl 6
 RUN apt update && apt install -y build-essential git
 
-# Install MoarVM
-COPY util/build-moarvm.sh /root/build-moarvm.sh
-RUN sh /root/build-moarvm.sh
-
-# Install NQP
-COPY util/build-nqp.sh /root/build-nqp.sh
-RUN sh /root/build-nqp.sh
-
-# Install Rakudo
-COPY util/build-rakudo.sh /root/build-rakudo.sh
-RUN sh /root/build-rakudo.sh
-
-# Bootstrap zef
-COPY util/bootstrap-zef.sh /root/bootstrap-zef.sh
-RUN sh /root/bootstrap-zef.sh
+# Copy and call the install script
+COPY util /root/
+RUN sh /root/build.sh
 
 # Create the final image containing the built targets
 FROM debian:stable-slim

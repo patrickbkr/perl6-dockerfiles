@@ -10,9 +10,11 @@ NQP_BRANCH ?= master
 NQP_REPO ?= https://github.com/perl6/nqp.git
 RAKUDO_BRANCH ?= master
 RAKUDO_REPO ?= https://github.com/rakudo/rakudo.git
+RAKUDO_VERSION ?= 2019.03.1
 
-docker:
+docker-repo:
 	docker build \
+		--build-arg "RELEASE=0" \
 		--build-arg "MOAR_BRANCH=$(MOAR_BRANCH)" \
 		--build-arg "MOAR_REPO=$(MOAR_REPO)" \
 		--build-arg "NQP_BRANCH=$(NQP_BRANCH)" \
@@ -24,4 +26,13 @@ docker:
 		-f docker/$(BASE) \
 		.
 
-.PHONY: docker
+docker-release:
+	docker build \
+		--build-arg "RELEASE=1" \
+		--build-arg "RAKUDO_VERSION=$(RAKUDO_VERSION)" \
+		--no-cache \
+		-t $(USER)/$(NAME):$(RAKUDO_VERSION) \
+		-f docker/$(BASE) \
+		.
+
+.PHONY: docker-repo docker-release
