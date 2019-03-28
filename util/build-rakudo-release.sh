@@ -16,7 +16,7 @@ make --jobs=`nproc` install
 printf "Installing zef\n" >&2
 
 cd $dir
-git clone https://github.com/patzim/zef.git zef
+git clone https://github.com/ugexe/zef.git zef
 cd zef
 perl6 -I. bin/zef install .
 
